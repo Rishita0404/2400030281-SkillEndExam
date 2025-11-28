@@ -1,18 +1,143 @@
-import { createContext, useState } from "react";
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Colourful College Portal Theme Switcher</title>
 
-export const ThemeContext = createContext();
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      transition: 0.4s ease;
+    }
 
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("light");
+    /* Light Theme */
+    body.light {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      color: #222;
+    }
 
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    /* Dark Theme */
+    body.dark {
+      background: linear-gradient(135deg, #1e1e2f, #3a3a5a);
+      color: #fff;
+    }
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className={theme === "light" ? "light-theme" : "dark-theme"}>
-        {children}
-      </div>
-    </ThemeContext.Provider>
-  );
-};
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+      transition: 0.4s ease;
+    }
+
+    body.dark .container {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin: 10px 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    /* Bottom Button */
+    .bottom-bar {
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(6px);
+    }
+
+    button {
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .light-btn {
+      background: #ff6f61;
+      color: white;
+    }
+
+    .dark-btn {
+      background: #4e9cff;
+      color: black;
+    }
+  </style>
+</head>
+
+<body class="light">
+
+  <div class="container">
+    <h1>College Student Portal</h1>
+
+    <p id="themeStatus" style="text-align:center; font-size:18px;">
+      Current Theme: Light
+    </p>
+
+    <ul>
+      <li>Dashboard</li>
+      <li>Results</li>
+      <li>Attendance</li>
+      <li>Profile</li>
+    </ul>
+  </div>
+
+  <!-- Bottom Button Bar -->
+  <div class="bottom-bar">
+    <button id="themeBtn" class="light-btn">Switch to Dark Mode</button>
+  </div>
+
+  <script>
+    const ThemeContext = {
+      theme: "light",
+      toggleTheme: function () {
+        this.theme = this.theme === "light" ? "dark" : "light";
+        updateUI();
+      },
+    };
+
+    const btn = document.getElementById("themeBtn");
+    const themeText = document.getElementById("themeStatus");
+
+    btn.addEventListener("click", () => ThemeContext.toggleTheme());
+
+    function updateUI() {
+      document.body.className = ThemeContext.theme;
+
+      // Update theme label text
+      themeText.textContent =
+        "Current Theme: " +
+        ThemeContext.theme.charAt(0).toUpperCase() + ThemeContext.theme.slice(1);
+
+      // Change button text & color
+      if (ThemeContext.theme === "light") {
+        btn.textContent = "Switch to Dark Mode";
+        btn.className = "light-btn";
+      } else {
+        btn.textContent = "Switch to Light Mode";
+        btn.className = "dark-btn";
+      }
+    }
+  </script>
+</body>
+</html>
